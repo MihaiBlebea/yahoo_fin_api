@@ -1,0 +1,6 @@
+env
+.eggs
+dist
+data
+*.egg-info
+
