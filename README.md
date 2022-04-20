@@ -1,6 +1,6 @@
 # Yahoo Financials API
 
-![example workflow](https://github.com/MihaiBlebea/yahoo-fin-api/actions/workflows/python-publish/badge.svg)
+![example workflow](https://github.com/MihaiBlebea/yahoo_fin_api/actions/workflows/python-publish/badge.svg)
 
 Lightweight SDK for interacting with the Yahoo Financials API. This is more geared on towards the three main financial records: 
 - balance sheet
