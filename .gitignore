@@ -2,6 +2,7 @@ env
 .eggs
 .pytest_cache
 dist
+build
 data
 *.egg-info
 
