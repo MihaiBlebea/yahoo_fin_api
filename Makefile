@@ -27,4 +27,4 @@ publish:
 	twine upload dist/* --verbose
 
 remove-old-builds:
-	rm -rf ./.eggs ./build ./dist ./trading_platform.egg-info
+	rm -rf ./.eggs ./build ./dist ./yahoo_fin_api.egg-info
