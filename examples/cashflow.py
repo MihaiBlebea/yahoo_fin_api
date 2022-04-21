@@ -1,14 +1,18 @@
-from yahoo_api.cashflow import CashFlows
-from examples.cache_fin_data import main as cache_fin_data
+from yahoo_api import YahooFinApi, Client
 
 from pprint import pprint
 
 def main():
-	cache_fin_data()
+	yf = YahooFinApi(
+		Client(
+			cache_response= True, 
+			input_csv_file="./examples/freetrade_universe.csv", 
+			download_folder_path="./data"
+		)
+	)
 
-	cfs = CashFlows.from_input_file("AAPL", "./data/AAPL.json")
-
-	pprint(cfs)
+	cf = yf.get_cashflow_statements(["AAPL", "TSLA"])
+	pprint(cf)
 
 if __name__ == "__main__":
 	main()

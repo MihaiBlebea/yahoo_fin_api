@@ -1,7 +1,5 @@
 # Yahoo Financials API
 
-![example workflow](https://github.com/MihaiBlebea/yahoo_fin_api/actions/workflows/python-publish/badge.svg)
-
 Lightweight SDK for interacting with the Yahoo Financials API. This is more geared on towards the three main financial records: 
 - balance sheet
 - income statement
@@ -18,18 +16,15 @@ pip3 install yahoo-fin-api
 ### 1. Get the data from the Yahoo Financials API
 
 ```python
-from yahoo_api.yahooapi import YahooApi
-from pprint import pprint
+from yahoo_api import Client
 
 def main():
-	yapi = YahooApi(
+	client = Client(
 		cache_response= True, # Should cache the response after fetching from API
 		input_csv_file="./examples/freetrade_universe.csv", # Load the universe from this file
 		download_folder_path="./data") # Cache the data from the API in this folder
 
-	symbols = yapi.get_symbols()
-
-	pprint(symbols[0])
+	client.get_symbols()
 
 if __name__ == "__main__":
 	main()
@@ -38,17 +33,21 @@ if __name__ == "__main__":
 ### 2. Load the balance sheet models
 
 ```python
-from yahoo_api.balance_sheet import BalanceSheets
-from examples.cache_fin_data import main as cache_fin_data
+from yahoo_api import YahooFinApi, Client
 
 from pprint import pprint
 
 def main():
-	cache_fin_data()
+	yf = YahooFinApi(
+		Client(
+			cache_response= True, 
+			input_csv_file="./examples/freetrade_universe.csv", 
+			download_folder_path="./data"
+		)
+	)
 
-	balance_sheets = BalanceSheets.from_input_file("AAPL", "./data/AAPL.json")
-
-	pprint(balance_sheets)
+	bs = yf.get_balance_sheets(["AAPL", "TSLA"])
+	pprint(bs)
 
 if __name__ == "__main__":
 	main()
@@ -57,17 +56,21 @@ if __name__ == "__main__":
 ### 3. Load the cash flow models
 
 ```python
-from yahoo_api.cashflow import CashFlows
-from examples.cache_fin_data import main as cache_fin_data
+from yahoo_api import YahooFinApi, Client
 
 from pprint import pprint
 
 def main():
-	cache_fin_data()
+	yf = YahooFinApi(
+		Client(
+			cache_response= True, 
+			input_csv_file="./examples/freetrade_universe.csv", 
+			download_folder_path="./data"
+		)
+	)
 
-	cfs = CashFlows.from_input_file("AAPL", "./data/AAPL.json")
-
-	pprint(cfs)
+	cf = yf.get_cashflow_statements(["AAPL", "TSLA"])
+	pprint(cf)
 
 if __name__ == "__main__":
 	main()
@@ -76,17 +79,21 @@ if __name__ == "__main__":
 ### 4. Load the income statement model
 
 ```python
-from yahoo_api.income_statement import IncomeStatements
-from examples.cache_fin_data import main as cache_fin_data
+from yahoo_api import YahooFinApi, Client
 
 from pprint import pprint
 
 def main():
-	cache_fin_data()
+	yf = YahooFinApi(
+		Client(
+			cache_response= True, 
+			input_csv_file="./examples/freetrade_universe.csv", 
+			download_folder_path="./data"
+		)
+	)
 
-	statements = IncomeStatements.from_input_file("AAPL", "./data/AAPL.json")
-
-	pprint(statements)
+	i_stmts = yf.get_income_statements(["AAPL", "TSLA"])
+	pprint(i_stmts)
 
 if __name__ == "__main__":
 	main()

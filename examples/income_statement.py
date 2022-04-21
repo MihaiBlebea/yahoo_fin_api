@@ -1,14 +1,18 @@
-from yahoo_api.income_statement import IncomeStatements
-from examples.cache_fin_data import main as cache_fin_data
+from yahoo_api import YahooFinApi, Client
 
 from pprint import pprint
 
 def main():
-	cache_fin_data()
+	yf = YahooFinApi(
+		Client(
+			cache_response= True, 
+			input_csv_file="./examples/freetrade_universe.csv", 
+			download_folder_path="./data"
+		)
+	)
 
-	statements = IncomeStatements.from_input_file("AAPL", "./data/AAPL.json")
-
-	pprint(statements)
+	i_stmts = yf.get_income_statements(["AAPL", "TSLA"])
+	pprint(i_stmts)
 
 if __name__ == "__main__":
 	main()

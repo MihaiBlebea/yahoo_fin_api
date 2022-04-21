@@ -1,142 +1,40 @@
-from __future__ import annotations
 from typing import List
-import requests
-from pathlib import Path
-from threading import Thread
-import json
-import yahoo_api.universe as Universe
+from yahoo_api.client import Client
+from yahoo_api.cashflow import CashFlows
+from yahoo_api.income_statement import IncomeStatements
+from yahoo_api.balance_sheet import BalanceSheets
 
-modules = [
-	"assetProfile",
-	"balanceSheetHistory",
-	"balanceSheetHistoryQuarterly",
-	"calendarEvents",
-	"cashflowStatementHistory",
-	"cashflowStatementHistoryQuarterly",
-	"defaultKeyStatistics",
-	"earnings",
-	"earningsHistory",
-	"earningsTrend",
-	"financialData",
-	"fundOwnership",
-	"incomeStatementHistory",
-	"incomeStatementHistoryQuarterly",
-	"indexTrend",
-	"industryTrend",
-	"insiderHolders",
-	"insiderTransactions",
-	"institutionOwnership",
-	"majorDirectHolders",
-	"majorHoldersBreakdown",
-	"netSharePurchaseActivity",
-	"price",
-	"quoteType",
-	"recommendationTrend",
-	"secFilings",
-	"sectorTrend",
-	"summaryDetail",
-	"summaryProfile",
-	"symbol",
-	"upgradeDowngradeHistory",
-	"fundProfile",
-	"topHoldings",
-	"fundPerformanc"
-]
+class YahooFinApi:
 
-headers = {"User-agent": "Mozilla/5.0"}
+	def __init__(self, client: Client) -> None:
+		self.client = client
 
-dir = Path(__file__).parent.resolve()
+	def get_balance_sheets(self, symbols: list[str])-> List[BalanceSheets]:
+		res = self.client.get_symbols(symbols)
 
-class YahooApi:
+		return [
+			BalanceSheets.from_dict(
+				symbols[i], 
+				r["balanceSheetHistory"]["balanceSheetStatements"]
+			) for i, r in enumerate(res)
+		]
 
-	def __init__(
-		self, 
-		cache_response: bool = False, 
-		input_csv_file: str = None,
-		download_folder_path: str = None)-> None:
+	def get_cashflow_statements(self, symbols: list[str])-> List[CashFlows]:
+		res = self.client.get_symbols(symbols)
 
-		if download_folder_path is None:
-			download_folder_path = f"{dir}"
+		return [
+			CashFlows.from_dict(
+				symbols[i], 
+				r["cashflowStatementHistory"]["cashflowStatements"]
+			) for i, r in enumerate(res)
+		]
 
-		# check if folder exists
-		Path(download_folder_path).mkdir(parents=True, exist_ok=True)
+	def get_income_statements(self, symbols: List[str])-> List[IncomeStatements]:
+		res = self.client.get_symbols(symbols)
 
-		self.input_csv_file = input_csv_file
-		self.download_folder_path = download_folder_path
-		self.cache_response = cache_response
-
-	def __cache_file(self, symbol: str)-> str:
-		return f"{self.download_folder_path}/{symbol}.json"
-
-	def __is_cached(self, symbol: str)-> bool:
-		return Path(self.__cache_file(symbol)).is_file()
-
-	def __from_cache(self, symbol: str)-> dict:
-		with open(self.__cache_file(symbol), "r") as file:
-			return json.loads(file.read())
-
-	def __to_cache(self, symbol: str, body: dict)-> None:
-		with open(self.__cache_file(symbol), "w") as file:
-			file.write(json.dumps(body))
-
-	def __get_symbol_async(self, symbol: str, result: dict):
-		result[symbol] = self.get_symbol(symbol)
-
-	def clear_cache(self, symbol: str)-> bool:
-		symbol = symbol.upper()
-		if self.__is_cached(symbol) is False:
-			return True
-
-		Path(self.__cache_file(symbol)).unlink()
-
-		return True
-	
-	def get_symbol(self, symbol: str)-> dict | None:
-		if isinstance(symbol, str) is False:
-			raise Exception("symbol is not string")
-
-		symbol = symbol.upper()
-
-		if self.__is_cached(symbol):
-			return self.__from_cache(symbol)
-
-		url = "https://query2.finance.yahoo.com/v10/finance/quoteSummary/{symbol}?modules={modules}"
-		res = requests.get(
-			url.format(symbol=symbol, modules=",".join(modules)), 
-			headers=headers,
-		)
-
-		if res.status_code != 200:
-			return None
-
-		body = res.json()
-
-		if body["quoteSummary"]["error"] is not None:
-			return None
-
-		body = body["quoteSummary"]["result"][0]
-
-		if self.cache_response:
-			self.__to_cache(symbol, body)
-
-		return body
-
-	def get_symbols(self, symbols: List[str] = None)-> List[dict]:
-		if symbols is None:
-			symbols = [ s.get_symbol() for s in Universe.symbols(self.input_csv_file) ]
-
-		threads = []
-		results = {}
-		for i, symbol in enumerate(symbols, start=1):
-			print(f"{i}/{len(symbols)} Processing {symbol}")
-
-			threads.append(
-				Thread(target=self.__get_symbol_async, args=(symbol, results,)),
-			)
-			threads[-1].start()
-
-		for t in threads:
-			t.join()
-
-		print(f"Completed {len(results)}/{len(symbols)}")
-		return [ ticker for ticker in list(results.values()) if ticker is not None ]
+		return [
+			IncomeStatements.from_dict(
+				symbols[i], 
+				r["incomeStatementHistory"]["incomeStatementHistory"]
+			) for i, r in enumerate(res)
+		]

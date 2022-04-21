@@ -1,14 +1,18 @@
-from yahoo_api.balance_sheet import BalanceSheets
-from examples.cache_fin_data import main as cache_fin_data
+from yahoo_api import YahooFinApi, Client
 
 from pprint import pprint
 
 def main():
-	cache_fin_data()
+	yf = YahooFinApi(
+		Client(
+			cache_response= True, 
+			input_csv_file="./examples/freetrade_universe.csv", 
+			download_folder_path="./data"
+		)
+	)
 
-	balance_sheets = BalanceSheets.from_input_file("AAPL", "./data/AAPL.json")
-
-	pprint(balance_sheets)
+	bs = yf.get_balance_sheets(["AAPL", "TSLA"])
+	pprint(bs)
 
 if __name__ == "__main__":
 	main()
