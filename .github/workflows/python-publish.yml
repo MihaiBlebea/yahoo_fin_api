@@ -45,6 +45,9 @@ jobs:
 
     - name: Install dependencies
       run: make setup
+
+    - name: Build library
+      run: make build
       
     - name: Publish package
       uses: pypa/gh-action-pypi-publish@release/v1
