@@ -3,12 +3,13 @@ from typing import List
 from dataclasses import dataclass
 import json
 import yahoo_api.utils as U
+from yahoo_api.base_model import Model
 
 
 @dataclass
-class IncomeStatement:
+class IncomeStatement(Model):
 
-	end_date: str
+	end_date: int
 
 	total_revenue: int
 
@@ -66,7 +67,7 @@ class IncomeStatements:
 			symbol,
 			[
 				IncomeStatement(
-					U.extract_key(d, "endDate", "fmt"), 
+					U.extract_key(d, "endDate", "raw"), 
 					U.extract_key(d, "totalRevenue", "raw"),
 					U.extract_key(d, "costOfRevenue", "raw"),
 					U.extract_key(d, "grossProfit", "raw"),

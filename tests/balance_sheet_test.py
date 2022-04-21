@@ -11,7 +11,8 @@ class TestBalanceSheet(unittest.TestCase):
 		bs = self.__load_balance_sheets()
 
 		self.assertEqual("AAPL", bs.symbol)
-		self.assertEqual("2021-09-25", bs.balance_sheets[0].end_date)
+		self.assertEqual(1632528000, bs.balance_sheets[0].end_date)
+		self.assertEqual("2021-09-25", bs.balance_sheets[0].fmt_end_date())
 
 	def test_can_load_balance_sheets_from_dict(self):
 		with open("./tests/AAPL.json") as file:
@@ -20,7 +21,8 @@ class TestBalanceSheet(unittest.TestCase):
 			bs = BalanceSheets.from_dict("AAPL", d)
 
 			self.assertEqual("AAPL", bs.symbol)
-			self.assertEqual("2021-09-25", bs.balance_sheets[0].end_date)
+			self.assertEqual(1632528000, bs.balance_sheets[0].end_date)
+			self.assertEqual("2021-09-25", bs.balance_sheets[0].fmt_end_date())
 
 	def test_correct_data(self):
 		bs = self.__load_balance_sheets()

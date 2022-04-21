@@ -3,12 +3,13 @@ from typing import List
 from dataclasses import dataclass
 import json
 import yahoo_api.utils as U
+from yahoo_api.base_model import Model
 
 
 @dataclass
-class CashFlow:
+class CashFlow(Model):
 
-	end_date: str
+	end_date: int
 
 	net_income: int
 
@@ -38,7 +39,7 @@ class CashFlows:
 			symbol,
 			[
 				CashFlow(
-					U.extract_key(d, "endDate", "fmt"), 
+					U.extract_key(d, "endDate", "raw"), 
 					U.extract_key(d, "netIncome", "raw"),
 					U.extract_key(d, "investments", "raw"),
 					U.extract_key(d, "dividendsPaid", "raw"),

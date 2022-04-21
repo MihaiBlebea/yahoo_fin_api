@@ -11,7 +11,8 @@ class TestIncomeStatement(unittest.TestCase):
 		statements = self.__load_income_statements()
 
 		self.assertEqual("AAPL", statements.symbol)
-		self.assertEqual("2021-09-25", statements.income_statements[0].end_date)
+		self.assertEqual(1632528000, statements.income_statements[0].end_date)
+		self.assertEqual("2021-09-25", statements.income_statements[0].fmt_end_date())
 
 	def test_can_load_statements_from_dict(self):
 		with open("./tests/AAPL.json") as file:
@@ -19,8 +20,8 @@ class TestIncomeStatement(unittest.TestCase):
 			d = d["incomeStatementHistory"]["incomeStatementHistory"]
 			statements = IncomeStatements.from_dict("AAPL", d)
 
-			self.assertEqual("AAPL", statements.symbol)
-			self.assertEqual("2021-09-25", statements.income_statements[0].end_date)
+			self.assertEqual(1632528000, statements.income_statements[0].end_date)
+			self.assertEqual("2021-09-25", statements.income_statements[0].fmt_end_date())
 
 	def test_correct_data(self):
 		stms = self.__load_income_statements()

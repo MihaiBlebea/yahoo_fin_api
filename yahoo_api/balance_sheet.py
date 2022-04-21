@@ -3,12 +3,13 @@ from typing import List
 from dataclasses import dataclass
 import json
 import yahoo_api.utils as U
+from yahoo_api.base_model import Model
 
 
 @dataclass
-class BalanceSheet:
+class BalanceSheet(Model):
 
-	end_date: str
+	end_date: int
 
 	cash: int
 
@@ -76,7 +77,7 @@ class BalanceSheets:
 			symbol,
 			[
 				BalanceSheet(
-					U.extract_key(d, "endDate", "fmt"), 
+					U.extract_key(d, "endDate", "raw"), 
 					U.extract_key(d, "cash", "raw"),
 					U.extract_key(d, "shortTermInvestments", "raw"),
 					U.extract_key(d, "netReceivables", "raw"),

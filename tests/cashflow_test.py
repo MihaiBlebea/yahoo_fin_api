@@ -11,7 +11,8 @@ class TestCashFlow(unittest.TestCase):
 		cf = self.__load_cashflows()
 
 		self.assertEqual("AAPL", cf.symbol)
-		self.assertEqual("2021-09-25", cf.cashflows[0].end_date)
+		self.assertEqual(1632528000, cf.cashflows[0].end_date)
+		self.assertEqual("2021-09-25", cf.cashflows[0].fmt_end_date())
 
 	def test_can_load_cashflows_from_dict(self):
 		with open("./tests/AAPL.json") as file:
@@ -20,7 +21,8 @@ class TestCashFlow(unittest.TestCase):
 			cf = CashFlows.from_dict("AAPL", d)
 
 			self.assertEqual("AAPL", cf.symbol)
-			self.assertEqual("2021-09-25", cf.cashflows[0].end_date)
+			self.assertEqual(1632528000, cf.cashflows[0].end_date)
+			self.assertEqual("2021-09-25", cf.cashflows[0].fmt_end_date())
 
 	def test_correct_data(self):
 		cf = self.__load_cashflows()
