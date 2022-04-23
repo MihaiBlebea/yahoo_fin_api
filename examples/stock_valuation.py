@@ -1,6 +1,6 @@
 from __future__ import annotations
-from yahoo_api import YahooFinApi, Client
-from yahoo_api.universe import symbols as get_symbols
+from yahoo_fin_api import YahooFinApi, Client
+from yahoo_fin_api.universe import symbols as get_symbols
 
 from pprint import pprint
 

@@ -8,8 +8,9 @@ README = (HERE / "README.md").read_text()
 setup(
 	name="yahoo_fin_api",
 	# packages=find_packages(include=["yahoo_api"], exclude=("tests",)),
-	packages=["yahoo_api", "yahoo_api.models"],
-	version="0.0.12",
+	keywords="yahoo financials trading api",
+	packages=["yahoo_fin_api", "yahoo_fin_api.models"],
+	version="0.0.13",
 	description="Pyhton Yahoo Financials SDK",
 	long_description=README,
 	long_description_content_type="text/markdown",

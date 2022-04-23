@@ -1,6 +1,6 @@
 import unittest
 import json
-from yahoo_api import FinancialData
+from yahoo_fin_api import FinancialData
 
 class TestFinancialData(unittest.TestCase):
 

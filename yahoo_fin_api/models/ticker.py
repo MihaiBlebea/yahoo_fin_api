@@ -1,7 +1,7 @@
 from __future__ import annotations
 from dataclasses import dataclass
-import yahoo_api.utils as U
-from yahoo_api.models import (
+import yahoo_fin_api.utils as U
+from yahoo_fin_api.models import (
 	FinancialData, 
 	SummaryDetail, 
 	CashFlows, 

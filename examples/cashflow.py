@@ -1,4 +1,4 @@
-from yahoo_api import YahooFinApi, Client
+from yahoo_fin_api import YahooFinApi, Client
 
 from pprint import pprint
 

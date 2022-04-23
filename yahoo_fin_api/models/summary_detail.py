@@ -1,8 +1,8 @@
 from __future__ import annotations
 from dataclasses import dataclass
 import json
-import yahoo_api.utils as U
-from yahoo_api.models.base_model import Model
+import yahoo_fin_api.utils as U
+from yahoo_fin_api.models.base_model import Model
 
 
 @dataclass

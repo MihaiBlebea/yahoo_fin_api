@@ -1,11 +1,11 @@
 from typing import List
-from yahoo_api.client import Client
-from yahoo_api.models.cashflow import CashFlows
-from yahoo_api.models.income_statement import IncomeStatements
-from yahoo_api.models.balance_sheet import BalanceSheets
-from yahoo_api.models.financial_data import FinancialData
-from yahoo_api.models.summary_detail import SummaryDetail
-from yahoo_api.models.ticker import Ticker
+from yahoo_fin_api.client import Client
+from yahoo_fin_api.models.cashflow import CashFlows
+from yahoo_fin_api.models.income_statement import IncomeStatements
+from yahoo_fin_api.models.balance_sheet import BalanceSheets
+from yahoo_fin_api.models.financial_data import FinancialData
+from yahoo_fin_api.models.summary_detail import SummaryDetail
+from yahoo_fin_api.models.ticker import Ticker
 
 
 class YahooFinApi:

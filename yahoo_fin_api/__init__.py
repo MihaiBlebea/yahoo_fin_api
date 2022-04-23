@@ -1,7 +1,7 @@
-from yahoo_api.client import Client
-from yahoo_api.yahooapi import YahooFinApi
+from yahoo_fin_api.client import Client
+from yahoo_fin_api.yahooapi import YahooFinApi
 
-from yahoo_api.models import (
+from yahoo_fin_api.models import (
 	BalanceSheets, 
 	BalanceSheet,
 	CashFlows,

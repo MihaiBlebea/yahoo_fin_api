@@ -1,6 +1,6 @@
 import unittest
 import json
-from yahoo_api import BalanceSheets
+from yahoo_fin_api import BalanceSheets
 
 class TestBalanceSheet(unittest.TestCase):
 

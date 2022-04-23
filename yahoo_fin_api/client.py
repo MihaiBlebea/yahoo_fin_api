@@ -4,7 +4,7 @@ import requests
 from pathlib import Path
 from threading import Thread
 import json
-import yahoo_api.universe as Universe
+import yahoo_fin_api.universe as Universe
 
 modules = [
 	"assetProfile",

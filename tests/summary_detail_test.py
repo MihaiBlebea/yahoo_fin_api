@@ -1,6 +1,6 @@
 import unittest
 import json
-from yahoo_api import SummaryDetail
+from yahoo_fin_api import SummaryDetail
 
 class TestSummaryDetail(unittest.TestCase):
 

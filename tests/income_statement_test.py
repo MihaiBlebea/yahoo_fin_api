@@ -1,6 +1,6 @@
 import unittest
 import json
-from yahoo_api import IncomeStatements
+from yahoo_fin_api import IncomeStatements
 
 class TestIncomeStatement(unittest.TestCase):
 

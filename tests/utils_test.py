@@ -1,5 +1,5 @@
 import unittest
-import yahoo_api.utils as Utils
+import yahoo_fin_api.utils as Utils
 
 class TestUtilsFunctions(unittest.TestCase):
 
