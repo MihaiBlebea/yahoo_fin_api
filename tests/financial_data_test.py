@@ -1,11 +1,11 @@
 import unittest
 import json
-from yahoo_api.financial_data import FinancialData
+from yahoo_api import FinancialData
 
 class TestFinancialData(unittest.TestCase):
 
 	def __load_financial_data(self)-> FinancialData:
-		return FinancialData.from_input_file("AAPL", "./tests/AAPL.json")
+		return FinancialData.from_input_file("./tests/AAPL.json")
 
 	def test_can_load_financial_data_from_file(self):
 		fd = self.__load_financial_data()
@@ -15,8 +15,7 @@ class TestFinancialData(unittest.TestCase):
 	def test_can_load_financial_data_from_dict(self):
 		with open("./tests/AAPL.json") as file:
 			d = json.loads(file.read())
-			d = d["financialData"]
-			fd = FinancialData.from_dict("AAPL", d)
+			fd = FinancialData.from_dict(d)
 
 			self.assertEqual("AAPL", fd.symbol)
 

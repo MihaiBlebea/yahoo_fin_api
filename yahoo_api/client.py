@@ -80,7 +80,15 @@ class Client:
 			file.write(json.dumps(body))
 
 	def __get_symbol_async(self, symbol: str, result: dict):
+		data = self.get_symbol(symbol)
+		if data is None:
+			print(f"symbol {symbol} is none")
+			exit(1)
 		result[symbol] = self.get_symbol(symbol)
+
+	def __is_valid_response(self, body: dict)-> bool:
+		keys = ["financialData", "summaryDetail"]
+		return len([k for k in keys if k in body]) > 0
 
 	def clear_cache(self, symbol: str)-> bool:
 		symbol = symbol.upper()
@@ -115,6 +123,9 @@ class Client:
 			return None
 
 		body = body["quoteSummary"]["result"][0]
+
+		if self.__is_valid_response(body) == False:
+			return None
 
 		if self.cache_response:
 			self.__to_cache(symbol, body)

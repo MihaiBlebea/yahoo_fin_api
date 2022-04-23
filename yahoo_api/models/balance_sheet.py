@@ -3,7 +3,7 @@ from typing import List
 from dataclasses import dataclass
 import json
 import yahoo_api.utils as U
-from yahoo_api.base_model import Model
+from yahoo_api.models.base_model import Model
 
 
 @dataclass
@@ -65,14 +65,17 @@ class BalanceSheets:
 
 	balance_sheets: List[BalanceSheet]
 
-	def from_input_file(symbol: str, path: str)-> BalanceSheets:
+	def from_input_file(path: str)-> BalanceSheets | None:
 		with open(path, "r") as file:
-			d = json.loads(file.read())
-			d = d["balanceSheetHistory"]["balanceSheetStatements"]
+			data = json.loads(file.read())
+			return BalanceSheets.from_dict(data)
 
-			return BalanceSheets.from_dict(symbol, d)
+	def from_dict(data: List[dict])-> BalanceSheets | None:
+		symbol = U.extract_key(data, "quoteType", "symbol")
+		data = U.extract_key(data, "balanceSheetHistory", "balanceSheetStatements")
+		if data is None or symbol is None:
+			return None
 
-	def from_dict(symbol: str, data: List[dict])-> BalanceSheets:
 		return BalanceSheets(
 			symbol,
 			[

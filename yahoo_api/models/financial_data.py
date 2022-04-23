@@ -2,7 +2,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 import json
 import yahoo_api.utils as U
-from yahoo_api.base_model import Model
+from yahoo_api.models.base_model import Model
 
 
 @dataclass
@@ -20,16 +20,19 @@ class FinancialData(Model):
 
 	target_median_price: float
 
-	def from_input_file(symbol: str, path: str)-> FinancialData:
-		symbol = symbol.upper()
+	free_cash_flow: float
 
+	def from_input_file(path: str)-> FinancialData | None:
 		with open(path, "r") as file:
-			d = json.loads(file.read())
-			d = d["financialData"]
+			data = json.loads(file.read())
+			return FinancialData.from_dict(data)
 
-			return FinancialData.from_dict(symbol, d)
+	def from_dict(data: dict)-> FinancialData | None:
+		symbol = U.extract_key(data, "quoteType", "symbol")
+		d = U.extract_key(data, "financialData")
+		if d is None or symbol is None:
+			return None
 
-	def from_dict(symbol: str, d: dict)-> FinancialData:
 		return FinancialData(
 			symbol,
 			U.extract_key(d, "currentPrice", "raw"),
@@ -37,4 +40,5 @@ class FinancialData(Model):
 			U.extract_key(d, "targetLowPrice", "raw"),
 			U.extract_key(d, "targetMeanPrice", "raw"),
 			U.extract_key(d, "targetMedianPrice", "raw"),
+			U.extract_key(d, "freeCashflow", "raw"),
 		)

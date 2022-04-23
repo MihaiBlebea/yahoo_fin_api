@@ -1,11 +1,11 @@
 import unittest
 import json
-from yahoo_api.cashflow import CashFlows
+from yahoo_api import CashFlows
 
 class TestCashFlow(unittest.TestCase):
 
 	def __load_cashflows(self)-> CashFlows:
-		return CashFlows.from_input_file("AAPL", "./tests/AAPL.json")
+		return CashFlows.from_input_file("./tests/AAPL.json")
 
 	def test_can_load_cashflows_from_file(self):
 		cf = self.__load_cashflows()
@@ -17,8 +17,7 @@ class TestCashFlow(unittest.TestCase):
 	def test_can_load_cashflows_from_dict(self):
 		with open("./tests/AAPL.json") as file:
 			d = json.loads(file.read())
-			d = d["cashflowStatementHistory"]["cashflowStatements"]
-			cf = CashFlows.from_dict("AAPL", d)
+			cf = CashFlows.from_dict(d)
 
 			self.assertEqual("AAPL", cf.symbol)
 			self.assertEqual(1632528000, cf.cashflows[0].end_date)

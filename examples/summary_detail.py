@@ -11,8 +11,8 @@ def main():
 		)
 	)
 
-	cf = yf.get_financial_data(["HRI"])
-	pprint(cf)
+	sd = yf.get_summary_detail(["AAPL", "TSLA"])
+	pprint(sd)
 
 if __name__ == "__main__":
 	main()

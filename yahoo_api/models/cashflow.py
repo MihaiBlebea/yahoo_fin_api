@@ -3,7 +3,7 @@ from typing import List
 from dataclasses import dataclass
 import json
 import yahoo_api.utils as U
-from yahoo_api.base_model import Model
+from yahoo_api.models.base_model import Model
 
 
 @dataclass
@@ -60,14 +60,17 @@ class CashFlows:
 
 	cashflows: List[CashFlow]
 
-	def from_input_file(symbol: str, path: str)-> CashFlows:
+	def from_input_file(path: str)-> CashFlows | None:
 		with open(path, "r") as file:
-			d = json.loads(file.read())
-			d = d["cashflowStatementHistory"]["cashflowStatements"]
+			data = json.loads(file.read())
+			return CashFlows.from_dict(data)
 
-			return CashFlows.from_dict(symbol, d)
+	def from_dict(data: dict)-> CashFlows | None:
+		symbol = U.extract_key(data, "quoteType", "symbol")
+		data = U.extract_key(data, "cashflowStatementHistory", "cashflowStatements")
+		if data is None or symbol is None:
+			return None
 
-	def from_dict(symbol: str, data: List[dict])-> CashFlows:
 		return CashFlows(
 			symbol,
 			[

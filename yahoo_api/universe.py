@@ -48,7 +48,7 @@ def symbols(input_file: str)-> List[Symbol]:
 		next(csvreader, None)
 		symbols = [
 			Symbol.from_csv_row(r[1], r[7], r[2], r[3], r[4], r[10]) 
-			for i, r in enumerate(csvreader)
+			for r in csvreader
 		]
 
 		print(f"Found {len(symbols)} symbols in the universe")

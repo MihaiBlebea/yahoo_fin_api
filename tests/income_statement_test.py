@@ -1,11 +1,11 @@
 import unittest
 import json
-from yahoo_api.income_statement import IncomeStatements
+from yahoo_api import IncomeStatements
 
 class TestIncomeStatement(unittest.TestCase):
 
 	def __load_income_statements(self)-> IncomeStatements:
-		return IncomeStatements.from_input_file("AAPL", "./tests/AAPL.json")
+		return IncomeStatements.from_input_file("./tests/AAPL.json")
 
 	def test_can_load_statements_from_file(self):
 		statements = self.__load_income_statements()
@@ -17,8 +17,7 @@ class TestIncomeStatement(unittest.TestCase):
 	def test_can_load_statements_from_dict(self):
 		with open("./tests/AAPL.json") as file:
 			d = json.loads(file.read())
-			d = d["incomeStatementHistory"]["incomeStatementHistory"]
-			statements = IncomeStatements.from_dict("AAPL", d)
+			statements = IncomeStatements.from_dict(d)
 
 			self.assertEqual(1632528000, statements.income_statements[0].end_date)
 			self.assertEqual("2021-09-25", statements.income_statements[0].fmt_end_date())

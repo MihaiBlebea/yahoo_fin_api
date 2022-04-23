@@ -1,11 +1,11 @@
 import unittest
 import json
-from yahoo_api.balance_sheet import BalanceSheets
+from yahoo_api import BalanceSheets
 
 class TestBalanceSheet(unittest.TestCase):
 
 	def __load_balance_sheets(self)-> BalanceSheets:
-		return BalanceSheets.from_input_file("AAPL", "./tests/AAPL.json")
+		return BalanceSheets.from_input_file("./tests/AAPL.json")
 
 	def test_can_load_cashflows_from_file(self):
 		bs = self.__load_balance_sheets()
@@ -17,8 +17,7 @@ class TestBalanceSheet(unittest.TestCase):
 	def test_can_load_balance_sheets_from_dict(self):
 		with open("./tests/AAPL.json") as file:
 			d = json.loads(file.read())
-			d = d["balanceSheetHistory"]["balanceSheetStatements"]
-			bs = BalanceSheets.from_dict("AAPL", d)
+			bs = BalanceSheets.from_dict(d)
 
 			self.assertEqual("AAPL", bs.symbol)
 			self.assertEqual(1632528000, bs.balance_sheets[0].end_date)
