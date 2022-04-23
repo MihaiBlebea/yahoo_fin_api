@@ -12,7 +12,7 @@ def main():
 	)
 
 	bs = yf.get_balance_sheets(["AAPL", "TSLA"])
-	pprint(bs)
+	pprint(bs[0].balance_sheets[0].cash)
 
 if __name__ == "__main__":
 	main()

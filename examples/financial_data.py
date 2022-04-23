@@ -12,7 +12,7 @@ def main():
 	)
 
 	cf = yf.get_financial_data(["HRI"])
-	pprint(cf)
+	pprint(cf.current_price)
 
 if __name__ == "__main__":
 	main()

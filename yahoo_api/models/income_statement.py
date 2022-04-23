@@ -53,6 +53,8 @@ class IncomeStatements:
 
 	symbol: str
 
+	title: str
+
 	income_statements: List[IncomeStatement]
 
 	def from_input_file(path: str)-> IncomeStatements | None:
@@ -62,12 +64,14 @@ class IncomeStatements:
 
 	def from_dict(data: dict)-> IncomeStatements | None:
 		symbol = U.extract_key(data, "quoteType", "symbol")
+		title = U.extract_key(data, "quoteType", "longName")
 		data = U.extract_key(data, "incomeStatementHistory", "incomeStatementHistory")
 		if data is None or symbol is None:
 			return None
 
 		return IncomeStatements(
 			symbol,
+			title,
 			[
 				IncomeStatement(
 					U.extract_key(d, "endDate", "raw"), 

@@ -34,7 +34,7 @@ def main():
 		if fin_data.free_cash_flow < 0:
 			continue
 
-		if summary.market_cap < 5 * BILLION:
+		if summary.market_cap < BILLION:
 			continue
 
 		cap_rate = fin_data.free_cash_flow / summary.market_cap * 100
@@ -42,6 +42,7 @@ def main():
 		if cap_rate > 10:
 			res.append({
 				"symbol": t.symbol,
+				"title": t.title,
 				"cap_rate": cap_rate,
 				"market_cap": summary.market_cap,
 				"fcf": fin_data.free_cash_flow,

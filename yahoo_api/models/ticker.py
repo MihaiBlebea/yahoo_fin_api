@@ -14,6 +14,8 @@ class Ticker:
 
 	symbol: str
 
+	title: str
+
 	financial_data: FinancialData
 
 	summary_detail: SummaryDetail
@@ -26,11 +28,13 @@ class Ticker:
 
 	def from_dict(data: dict)-> Ticker | None:
 		symbol = U.extract_key(data, "quoteType", "symbol")
+		title = U.extract_key(data, "quoteType", "longName")
 		if symbol is None:
 			return None
 
 		return Ticker(
 			symbol,
+			title,
 			FinancialData.from_dict(data),
 			SummaryDetail.from_dict(data),
 			CashFlows.from_dict(data),

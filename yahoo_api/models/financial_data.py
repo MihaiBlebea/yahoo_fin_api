@@ -10,6 +10,8 @@ class FinancialData(Model):
 
 	symbol: str
 
+	title: str
+
 	current_price: float
 
 	target_high_price: float
@@ -29,12 +31,14 @@ class FinancialData(Model):
 
 	def from_dict(data: dict)-> FinancialData | None:
 		symbol = U.extract_key(data, "quoteType", "symbol")
+		title = U.extract_key(data, "quoteType", "longName")
 		d = U.extract_key(data, "financialData")
 		if d is None or symbol is None:
 			return None
 
 		return FinancialData(
 			symbol,
+			title,
 			U.extract_key(d, "currentPrice", "raw"),
 			U.extract_key(d, "targetHighPrice", "raw"),
 			U.extract_key(d, "targetLowPrice", "raw"),

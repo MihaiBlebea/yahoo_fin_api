@@ -58,6 +58,8 @@ class CashFlows:
 
 	symbol: str
 
+	title: str
+
 	cashflows: List[CashFlow]
 
 	def from_input_file(path: str)-> CashFlows | None:
@@ -67,12 +69,14 @@ class CashFlows:
 
 	def from_dict(data: dict)-> CashFlows | None:
 		symbol = U.extract_key(data, "quoteType", "symbol")
+		title = U.extract_key(data, "quoteType", "longName")
 		data = U.extract_key(data, "cashflowStatementHistory", "cashflowStatements")
 		if data is None or symbol is None:
 			return None
 
 		return CashFlows(
 			symbol,
+			title,
 			[
 				CashFlow(
 					U.extract_key(d, "endDate", "raw"), 
