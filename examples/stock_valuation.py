@@ -46,7 +46,8 @@ def main():
 				"cap_rate": cap_rate,
 				"market_cap": summary.market_cap,
 				"fcf": fin_data.free_cash_flow,
-				"current_price": fin_data.current_price
+				"current_price": fin_data.current_price,
+				"profit_margin": fin_data.profit_margins
 			})
 
 	res = sorted(res, key=lambda r: r["cap_rate"], reverse=True)

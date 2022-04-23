@@ -11,8 +11,9 @@ def main():
 		)
 	)
 
-	cf = yf.get_financial_data(["HRI"])
-	pprint(cf.current_price)
+	cf = yf.get_financial_data(["AAPL"])[0]
+	pprint(cf)
+	print(cf.profit_margins)
 
 if __name__ == "__main__":
 	main()

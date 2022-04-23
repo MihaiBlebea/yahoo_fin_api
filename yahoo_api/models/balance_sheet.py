@@ -10,23 +10,34 @@ from yahoo_api.models.base_model import Model
 class BalanceSheet(Model):
 	"""
 	A balance sheet is a financial statement that reports a company's assets, liabilities, and shareholder equity.
+	
 	It provides a snapshot of a company's finances (what it owns and owes) as of the date of publication.
 	"""
 
 	end_date: int
 
 	cash: int
-	"""Cash or company assets that can be converted into cash quickly. The most liquid current asset."""
+	"""
+	Cash or company assets that can be converted into cash quickly. 
+	
+	The most liquid current asset.
+	"""
 
 	short_term_investments: int
 
 	net_receivables: int
-	"""Money customers owe a company that has not been paid yet."""
+	"""
+	Money customers owe a company that has not been paid yet.
+	"""
 
 	inventory: int
 	"""
 	A company's products that are awaiting to be sold to customers, along with raw materials and work-in-progress that will eventually become finished goods.
-	If the inventory line item appears high, this may imply the company has inferior products, product deficiencies, out-of-favor products, or a similar factor which is causing its products to not sell in stores. Moreover, this may be a sign of poor sales and/or marketing departments. 
+	
+	If the inventory line item appears high, this may imply the company has inferior products, product deficiencies, out-of-favor products, or a similar factor which is causing its products to not sell in stores. 
+	
+	Moreover, this may be a sign of poor sales and/or marketing departments. 
+	
 	Naturally, if products are not needed from the company's inventory, this can lead to higher storage costs for the company, thereby reducing profit margins.
 	"""
 
@@ -39,6 +50,7 @@ class BalanceSheet(Model):
 	property_plant_equipment: int
 	"""
 	These are the company's assets that are essential to the normal operations of the business. 
+	
 	Typically, this will be a large figure on a company's balance sheet and includes land, office, machinery, vehicles, factories, and other physical assets that cannot be easily converted into cash.
 	"""
 
@@ -49,9 +61,13 @@ class BalanceSheet(Model):
 	accounts_payable: int
 	"""
 	Represents payment due to lenders. 
+	
 	Raw materials purchased from a supplier, but not yet paid for by the company, is a common example of what will be recorded as accounts payable. 
+	
 	Companies are responsible for paying their suppliers, and if accounts payable appears too big, this may be a warning sign to not invest in the company. 
+	
 	Put simply, this indicates that a company cannot pay its short-term debts as it owes its suppliers a lot and may fail at settling its debts. 
+	
 	Obviously, if a company regularly fails to pay off its short-term debts, it may become bankrupt rather quickly.
 	"""
 
@@ -62,6 +78,7 @@ class BalanceSheet(Model):
 	long_term_debt: int
 	"""
 	Refers to a catch-all phrase for when a company takes on a loan and repayments are made for multiple years to pay down the loan. 
+	
 	Types of long term debt include bank debt, mortgages, bonds, and debentures.
 	"""
 
@@ -74,19 +91,23 @@ class BalanceSheet(Model):
 	common_stock: int
 	"""
 	Represents the shareholders' investment in the business. 
+	
 	Common stock is sold, purchased, and resold in a stock exchange, and given a publicly listed price. 
+	
 	Some pay dividends, typically on a quarterly basis, and ownership of common stock will give you voting rights in a company's policies and procedures.
 	"""
 
 	retained_earnings: int
 	"""
 	Amount of earnings a company has left over after paying dividends to its shareholders. 
+	
 	In other words, retained earnings is any profit a company retains that has not been distributed to its owners, which can be used to buy assets and invest in the future of the company.
 	"""
 
 	treasury_stock: int
 	"""
 	Refers to shares that have been repurchased by the issuing company that were previously outstanding. 
+	
 	Also known as "reacquired stock," and causes total shareholders' equity to be reduced.
 	"""
 
@@ -95,7 +116,13 @@ class BalanceSheet(Model):
 	total_stockholder_equity: int
 
 	net_tangible_assets: int
-	"""Physical assets that can be touched. This includes plant, property, and equipment (PP&E). Most tangible assets depreciate in value over time as well."""
+	"""
+	Physical assets that can be touched. 
+	
+	This includes plant, property, and equipment (PP&E). 
+	
+	Most tangible assets depreciate in value over time as well.
+	"""
 
 	def current_ratio(self)-> float:
 		"""

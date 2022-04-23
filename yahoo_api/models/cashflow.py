@@ -12,12 +12,29 @@ class CashFlow(Model):
 	end_date: int
 
 	net_income: int
+	"""
+	Derived from the company's income statement for the corresponding period and is calculated by deducting all expenses from the company's total revenues. 
+	
+	Measures the profitability of a company.
+	"""
 
 	depreciation: int
+	"""
+	Depreciation is a non-cash expense and occurs when tangible assets lose value over the course of time (over its "useful life"). 
+	
+	Eventually, these assets will have a value of zero, because they will no longer be useful to the business. 
+	
+	Amortization refers to the practice of spreading an intangible asset's cost over the asset's useful life.
+	"""
 
 	change_to_net_income: int
 
 	change_to_account_receivables: int
+	"""
+	Refers to the amount customers owe for products/services delivered to them, but not yet paid for (to the company). 
+	
+	Increases (decreases) in accounts receivable will therefore be deducted (added) to net income.
+	"""
 
 	change_to_liabilities: int
 
@@ -30,12 +47,22 @@ class CashFlow(Model):
 	capital_expenditures: int
 
 	investments: int
+	"""
+	Shows how much money the company generated or lost from investments made from the excess cash the company generated. 
+	
+	These investments (i.e., bonds) are made to get better returns than what's possible in a savings account or money market fund, for example.
+	"""
 
 	other_cashflows_from_investing_activities: int
 
 	total_cashflows_from_investing_activities: int
 
 	dividends_paid: int
+	"""
+	Total amount of dividends paid to shareholders over the period. 
+	
+	Only relevant if the company issues dividends.
+	"""
 
 	net_borrowings: int
 
@@ -46,10 +73,20 @@ class CashFlow(Model):
 	change_in_cash: int
 
 	repurchase_of_stock: int
+	"""
+	When a company buybacks stock from the public stock market, thereby causing the number of outstanding shares in the company to decrease.
+	"""
 
 	issuance_of_stock: int
 
 	def free_cash_flow(self, formatted: bool = False)-> int:
+		"""
+		One of the most important numbers you can calculate from the cash flow statement is free cash flow (FCF). 
+		
+		FCF tells investors and analysts how much cash a business generates after growing and maintaining its business. 
+		
+		This cash can therefore be paid to shareholders as a dividend, be used to pay down debt, buyback shares, or to just keep as cash on the balance sheet for any future possible investment opportunity.
+		"""
 		val = self.total_cash_from_operating_activities - self.capital_expenditures
 		return U.format_amount(val) if formatted else val
 
