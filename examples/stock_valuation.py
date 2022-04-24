@@ -1,5 +1,5 @@
 from __future__ import annotations
-from yahoo_fin_api import YahooFinApi, Client
+from yahoo_fin_api import YahooFinApi, Client, FileCache
 from yahoo_fin_api.universe import symbols as get_symbols
 
 from pprint import pprint
@@ -7,15 +7,10 @@ from pprint import pprint
 BILLION = 1000000000
 
 def main():
-	yf = YahooFinApi(
-		Client(
-			cache_response= True,
-			download_folder_path="./data"
-		)
-	)
+	yf = YahooFinApi(Client(FileCache("./data")))
 
 	symbols = [
-		s.symbol for s in get_symbols("./examples/freetrade_universe.csv")
+		s.symbol for s in get_symbols("./universe/freetrade.csv")
 		if s.isa_eligible == True and s.plus_only == False
 	]
 	tickers = yf.get_all(symbols)

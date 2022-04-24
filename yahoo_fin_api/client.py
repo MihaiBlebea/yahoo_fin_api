@@ -5,6 +5,8 @@ from pathlib import Path
 from threading import Thread
 import json
 import yahoo_fin_api.universe as Universe
+from yahoo_fin_api.cache import BaseCache
+
 
 modules = [
 	"assetProfile",
@@ -49,41 +51,10 @@ dir = Path(__file__).parent.resolve()
 
 class Client:
 
-	def __init__(
-		self, 
-		cache_response: bool = False, 
-		input_csv_file: str = None,
-		download_folder_path: str = None)-> None:
-
-		if download_folder_path is None:
-			download_folder_path = f"{dir}"
-
-		# check if folder exists
-		Path(download_folder_path).mkdir(parents=True, exist_ok=True)
-
-		self.input_csv_file = input_csv_file
-		self.download_folder_path = download_folder_path
-		self.cache_response = cache_response
-
-	def __cache_file(self, symbol: str)-> str:
-		return f"{self.download_folder_path}/{symbol}.json"
-
-	def __is_cached(self, symbol: str)-> bool:
-		return Path(self.__cache_file(symbol)).is_file()
-
-	def __from_cache(self, symbol: str)-> dict:
-		with open(self.__cache_file(symbol), "r") as file:
-			return json.loads(file.read())
-
-	def __to_cache(self, symbol: str, body: dict)-> None:
-		with open(self.__cache_file(symbol), "w") as file:
-			file.write(json.dumps(body))
+	def __init__(self, cache: BaseCache = None)-> None:
+		self.cache = cache
 
 	def __get_symbol_async(self, symbol: str, result: dict):
-		data = self.get_symbol(symbol)
-		if data is None:
-			print(f"symbol {symbol} is none")
-			exit(1)
 		result[symbol] = self.get_symbol(symbol)
 
 	def __is_valid_response(self, body: dict)-> bool:
@@ -91,22 +62,16 @@ class Client:
 		return len([k for k in keys if k in body]) > 0
 
 	def clear_cache(self, symbol: str)-> bool:
-		symbol = symbol.upper()
-		if self.__is_cached(symbol) is False:
-			return True
+		return self.cache.clear_cache(symbol)
 
-		Path(self.__cache_file(symbol)).unlink()
-
-		return True
-	
 	def get_symbol(self, symbol: str)-> dict | None:
 		if isinstance(symbol, str) is False:
 			raise Exception("symbol is not string")
 
 		symbol = symbol.upper()
 
-		if self.__is_cached(symbol):
-			return self.__from_cache(symbol)
+		if self.cache.is_cached(symbol):
+			return self.cache.from_cache(symbol)
 
 		url = "https://query2.finance.yahoo.com/v10/finance/quoteSummary/{symbol}?modules={modules}"
 		res = requests.get(
@@ -127,8 +92,8 @@ class Client:
 		if self.__is_valid_response(body) == False:
 			return None
 
-		if self.cache_response:
-			self.__to_cache(symbol, body)
+		if self.cache is not None:
+			self.cache.to_cache(symbol, body)
 
 		return body
 

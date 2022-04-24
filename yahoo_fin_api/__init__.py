@@ -1,3 +1,4 @@
+from yahoo_fin_api.cache import FileCache
 from yahoo_fin_api.client import Client
 from yahoo_fin_api.yahooapi import YahooFinApi
 

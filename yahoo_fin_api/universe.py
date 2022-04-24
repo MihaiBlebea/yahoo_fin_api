@@ -2,7 +2,29 @@ from __future__ import annotations
 from typing import List
 import csv
 from dataclasses import dataclass
+import requests
 
+UNIVERSE_BASE_URL = "https://raw.githubusercontent.com/MihaiBlebea/yahoo_fin_api/master/universe"
+FREETRADE_FILE = "freetrade.csv"
+
+class Universe:
+	def get_freetrade_universe()-> List[str] | None:
+		res = requests.get(f"{UNIVERSE_BASE_URL}/{FREETRADE_FILE}")
+		
+		if res.status_code != 200:
+			return None
+
+		body = res.json()
+
+		csvreader = csv.reader(body)
+		next(csvreader, None)
+		return [ r[7] for r in csvreader ]
+
+	def get_sp_500_universe()-> List[str]:
+		pass
+
+	def get_ftse_100_universe()-> List[str]:
+		pass
 
 @dataclass
 class Symbol:
@@ -54,3 +76,8 @@ def symbols(input_file: str)-> List[Symbol]:
 		print(f"Found {len(symbols)} symbols in the universe")
 
 		return [symbol for symbol in symbols if symbol.isa_eligible == True]
+
+if __name__ == "__main__":
+	from pprint import pprint
+	universe = Universe.get_freetrade_universe()
+	pprint(universe)
