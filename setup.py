@@ -10,7 +10,7 @@ setup(
 	# packages=find_packages(include=["yahoo_api"], exclude=("tests",)),
 	keywords="yahoo financials trading api",
 	packages=["yahoo_fin_api", "yahoo_fin_api.models"],
-	version="0.0.13",
+	version="0.0.15",
 	description="Pyhton Yahoo Financials SDK",
 	long_description=README,
 	long_description_content_type="text/markdown",
