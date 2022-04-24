@@ -28,6 +28,9 @@ jobs:
 
     - name: Install dependencies
       run: make setup
-      
+
+    - name: Check correct types
+      run: make check-typing
+
     - name: Run tests
       run: make test
