@@ -34,21 +34,21 @@ class YahooFinApi:
 			IncomeStatements.from_dict(r) for r in res
 		]
 
-	def get_financial_data(self, symbols: List[str])-> FinancialData:
+	def get_financial_data(self, symbols: List[str])-> List[FinancialData]:
 		res = self.client.get_symbols(symbols)
 
 		return [
 			FinancialData.from_dict(r) for r in res 
 		]
 
-	def get_summary_detail(self, symbols: List[str])-> SummaryDetail:
+	def get_summary_detail(self, symbols: List[str])-> List[SummaryDetail]:
 		res = self.client.get_symbols(symbols)
 
 		return [
 			SummaryDetail.from_dict(r) for r in res
 		]
 
-	def get_all(self, symbols: List[str])-> Ticker:
+	def get_all(self, symbols: List[str])-> List[Ticker]:
 		res = self.client.get_symbols(symbols)
 
 		return [
