@@ -14,23 +14,23 @@ class BalanceSheet(Model):
 	It provides a snapshot of a company's finances (what it owns and owes) as of the date of publication.
 	"""
 
-	end_date: int
+	end_date: int | None
 
-	cash: int
+	cash: int | None
 	"""
 	Cash or company assets that can be converted into cash quickly. 
 	
 	The most liquid current asset.
 	"""
 
-	short_term_investments: int
+	short_term_investments: int | None
 
-	net_receivables: int
+	net_receivables: int | None
 	"""
 	Money customers owe a company that has not been paid yet.
 	"""
 
-	inventory: int
+	inventory: int | None
 	"""
 	A company's products that are awaiting to be sold to customers, along with raw materials and work-in-progress that will eventually become finished goods.
 	
@@ -41,24 +41,24 @@ class BalanceSheet(Model):
 	Naturally, if products are not needed from the company's inventory, this can lead to higher storage costs for the company, thereby reducing profit margins.
 	"""
 
-	other_current_assets: int
+	other_current_assets: int | None
 
-	total_current_assets: int
+	total_current_assets: int | None
 
-	long_term_investments: int
+	long_term_investments: int | None
 
-	property_plant_equipment: int
+	property_plant_equipment: int | None
 	"""
 	These are the company's assets that are essential to the normal operations of the business. 
 	
 	Typically, this will be a large figure on a company's balance sheet and includes land, office, machinery, vehicles, factories, and other physical assets that cannot be easily converted into cash.
 	"""
 
-	other_assets: int
+	other_assets: int | None
 
-	total_assets: int
+	total_assets: int | None
 
-	accounts_payable: int
+	accounts_payable: int | None
 	"""
 	Represents payment due to lenders. 
 	
@@ -71,24 +71,24 @@ class BalanceSheet(Model):
 	Obviously, if a company regularly fails to pay off its short-term debts, it may become bankrupt rather quickly.
 	"""
 
-	short_term_debt: int
+	short_term_debt: int | None
 
-	other_current_liab: int
+	other_current_liab: int | None
 
-	long_term_debt: int
+	long_term_debt: int | None
 	"""
 	Refers to a catch-all phrase for when a company takes on a loan and repayments are made for multiple years to pay down the loan. 
 	
 	Types of long term debt include bank debt, mortgages, bonds, and debentures.
 	"""
 
-	other_liab: int
+	other_liab: int | None
 
-	total_current_liabilities: int
+	total_current_liabilities: int | None
 
-	total_liab: int
+	total_liab: int | None
 
-	common_stock: int
+	common_stock: int | None
 	"""
 	Represents the shareholders' investment in the business. 
 	
@@ -97,25 +97,25 @@ class BalanceSheet(Model):
 	Some pay dividends, typically on a quarterly basis, and ownership of common stock will give you voting rights in a company's policies and procedures.
 	"""
 
-	retained_earnings: int
+	retained_earnings: int | None
 	"""
 	Amount of earnings a company has left over after paying dividends to its shareholders. 
 	
 	In other words, retained earnings is any profit a company retains that has not been distributed to its owners, which can be used to buy assets and invest in the future of the company.
 	"""
 
-	treasury_stock: int
+	treasury_stock: int | None
 	"""
 	Refers to shares that have been repurchased by the issuing company that were previously outstanding. 
 	
 	Also known as "reacquired stock," and causes total shareholders' equity to be reduced.
 	"""
 
-	other_stockholder_equity: int
+	other_stockholder_equity: int | None
 
-	total_stockholder_equity: int
+	total_stockholder_equity: int | None
 
-	net_tangible_assets: int
+	net_tangible_assets: int | None
 	"""
 	Physical assets that can be touched. 
 	
@@ -124,7 +124,7 @@ class BalanceSheet(Model):
 	Most tangible assets depreciate in value over time as well.
 	"""
 
-	def current_ratio(self)-> float:
+	def current_ratio(self)-> float | None:
 		"""
 		You can calculate the current ratio to ensure the company you're evaluating has enough short-term assets to cover its short-term debt obligations.
 		
@@ -132,20 +132,24 @@ class BalanceSheet(Model):
 		
 		In general, this helps to prove that the company has enough cash to cover any debts that are due within the next 12 months.
 		"""
+		if self.total_current_assets is None or self.total_current_liabilities is None:
+			return None
 		return round(self.total_current_assets / self.total_current_liabilities, 2)
 
-	def quick_ratio(self)-> float:
+	def quick_ratio(self)-> float | None:
 		"""
 		If you want be more conservative, you can also calculate the quick ratio, as shown below:
 		
 		Ultimately, this liquidity ratio is more conservative than the current ratio because it doesn't include inventory, which is more difficult to liquidate, thereby focusing on the company's more liquid assets.
 		"""
+		if self.total_current_assets is None or self.inventory is None or self.total_current_liabilities is None:
+			return None
 		return round(
 			(self.total_current_assets - self.inventory) / self.total_current_liabilities, 
 			2
 		)
 
-	def working_capital(self)-> float:
+	def working_capital(self)-> float | None:
 		"""
 		Working capital, as another liquidity figure, is simply the difference between a company's current assets and current liabilities.
 		
@@ -157,33 +161,40 @@ class BalanceSheet(Model):
 		
 		If working capital is negative, this may be a sign of short-term liquidity issues with the company. For example, this may be due to a large cash outlay purchase for raw goods, with the accounts payable account increasing substantially.
 		"""
+		if self.total_current_assets is None or self.total_current_liabilities is None:
+			return None
 		return self.total_current_assets - self.total_current_liabilities
 
-	def shareholders_equity(self)-> float:
+	def shareholders_equity(self)-> float | None:
 		"""
 		Shareholders' equity, as the name suggests, refers to the amount owners of a company (e.g., investors, managers, institutions, etc) have invested in the business, through investments and by retaining earnings over time. 
 		
 		So, when you purchase stock in a company and gain partial ownership, the money that goes into the company is considered shareholders' equity.
 		"""
+		if self.total_assets is None or self.total_liab is None:
+			return None
 		return self.total_assets - self.total_liab
 
-	def debt_to_equity(self)-> float:
+	def debt_to_equity(self)-> float | None:
 		"""
 		To quickly analyze debt levels, you can use the debt-to-equity (D/E) ratio and look for a ratio close to 0.5.
 		
 		Obviously, if the company you're evaluating has no debt, there's no risk of the company defaulting. However, there's always a risk of default if the company has debt, and the more debt a company has, the greater this risk.
 		"""
+		shareholders_equity = self.shareholders_equity()
+		if self.short_term_debt is None or self.long_term_debt is None or shareholders_equity is None:
+			return None
 		return round(
-			(self.short_term_debt + self.long_term_debt) / self.shareholders_equity(),
+			(self.short_term_debt + self.long_term_debt) / shareholders_equity,
 			2
 		)
 
 @dataclass
 class BalanceSheets:
 
-	symbol: str
+	symbol: str | None
 
-	title: str
+	title: str | None
 
 	balance_sheets: List[BalanceSheet]
 

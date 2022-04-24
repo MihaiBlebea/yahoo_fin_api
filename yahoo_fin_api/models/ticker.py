@@ -12,9 +12,9 @@ from yahoo_fin_api.models import (
 @dataclass
 class Ticker:
 
-	symbol: str
+	symbol: str | None
 
-	title: str
+	title: str | None
 
 	financial_data: FinancialData | None
 

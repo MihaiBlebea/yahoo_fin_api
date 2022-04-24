@@ -8,29 +8,29 @@ from yahoo_fin_api.models.base_model import Model
 @dataclass
 class SummaryDetail(Model):
 
-	symbol: str
+	symbol: str | None
 
-	title: str
+	title: str | None
 
-	price_hint: int
+	price_hint: int | None
 
-	previous_close: float
+	previous_close: float | None
 
-	open: float
+	open: float | None
 
-	day_low: float
+	day_low: float | None
 
-	day_high: float
+	day_high: float | None
 
-	regular_market_previous_close: float
+	regular_market_previous_close: float | None
 
-	regular_market_open: float
+	regular_market_open: float | None
 
-	regular_market_day_low: float
+	regular_market_day_low: float | None
 
-	regular_market_day_high: float
+	regular_market_day_high: float | None
 
-	dividend_rate: float
+	dividend_rate: float | None
 	"""
 	The dividend rate is an estimate of the dividend-only return of an investment such as on a stock or mutual fund. 
 	
@@ -41,18 +41,18 @@ class SummaryDetail(Model):
 	Because dividend rates change relative to the stock price, it can often look unusually high for stocks that are falling in value quickly.
 	"""
 
-	dividend_yield: float
+	dividend_yield: float | None
 	"""
 	The dividend yield, expressed as a percentage, is a financial ratio (dividend/price) that shows how much a company pays out in dividends each year relative to its stock price.
 	"""
 
-	ex_dividend_date: int
+	ex_dividend_date: int | None
 
-	payout_ratio: float
+	payout_ratio: float | None
 
-	five_year_avg_dividend_yield: float
+	five_year_avg_dividend_yield: float | None
 
-	beta: float
+	beta: float | None
 	"""
 	Beta is a measure of a stock's volatility in relation to the overall market. 
 	
@@ -65,7 +65,7 @@ class SummaryDetail(Model):
 	High-beta stocks are supposed to be riskier but provide higher return potential; low-beta stocks pose less risk but also lower returns.
 	"""
 
-	trailing_pe: float
+	trailing_pe: float | None
 	"""
 	Trailing price-to-earnings (P/E) is a relative valuation multiple that is based on the last 12 months of actual earnings. 
 	
@@ -74,33 +74,33 @@ class SummaryDetail(Model):
 	When people refer to the P/E ratio generically, they are typically referring to the trailing P/E.
 	"""
 
-	forward_pe: float
+	forward_pe: float | None
 	"""
 	Forward price-to-earnings (forward P/E) is a version of the ratio of price-to-earnings (P/E) that uses forecasted earnings for the P/E calculation. 
 	
 	While the earnings used in this formula are just an estimate and not as reliable as current or historical earnings data, there are still benefits to estimated P/E analysis.
 	"""
 
-	volume: int
+	volume: int | None
 
-	regular_market_volume: int
+	regular_market_volume: int | None
 
-	average_volume: int
+	average_volume: int | None
 
-	average_volume_10_days: int
+	average_volume_10_days: int | None
 
-	average_daily_volume_10_day: int
+	average_daily_volume_10_day: int | None
 
-	market_cap: int
+	market_cap: int | None
 	"""
 	Market capitalization refers to the total dollar market value of a company's outstanding shares of stock. 
 	
 	Commonly referred to as "market cap," it's calculated by multiplying the total number of a company's outstanding shares by the current market price of one share.
 	"""
 
-	fifty_two_week_low: float
+	fifty_two_week_low: float | None
 
-	fifty_two_week_high: float
+	fifty_two_week_high: float | None
 
 	@staticmethod
 	def from_input_file(path: str)-> SummaryDetail | None:
