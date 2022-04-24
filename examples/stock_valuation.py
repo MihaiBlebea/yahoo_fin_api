@@ -1,6 +1,5 @@
 from __future__ import annotations
-from yahoo_fin_api import YahooFinApi, Client, FileCache
-from yahoo_fin_api.universe import symbols as get_symbols
+from yahoo_fin_api import YahooFinApi, Client, FileCache, Universe
 
 from pprint import pprint
 
@@ -8,11 +7,7 @@ BILLION = 1000000000
 
 def main():
 	yf = YahooFinApi(Client(FileCache("./data")))
-
-	symbols = [
-		s.symbol for s in get_symbols("./universe/freetrade.csv")
-		if s.isa_eligible == True and s.plus_only == False
-	]
+	symbols = Universe.get_ftse_100_universe()
 	tickers = yf.get_all(symbols)
 	
 	res = []
@@ -29,7 +24,7 @@ def main():
 		if fin_data.free_cash_flow < 0:
 			continue
 
-		if summary.market_cap < BILLION:
+		if summary.market_cap < 5 * BILLION:
 			continue
 
 		cap_rate = fin_data.free_cash_flow / summary.market_cap * 100

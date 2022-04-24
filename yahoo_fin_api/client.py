@@ -3,8 +3,6 @@ from typing import List
 import requests
 from pathlib import Path
 from threading import Thread
-import json
-import yahoo_fin_api.universe as Universe
 from yahoo_fin_api.cache import BaseCache
 
 
@@ -99,7 +97,7 @@ class Client:
 
 	def get_symbols(self, symbols: List[str] = None)-> List[dict]:
 		if symbols is None:
-			symbols = [ s.get_symbol() for s in Universe.symbols(self.input_csv_file) ]
+			return []
 
 		threads = []
 		results = {}
