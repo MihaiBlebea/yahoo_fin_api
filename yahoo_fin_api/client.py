@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import List
+from typing import List, Dict
 import requests
 from pathlib import Path
 from threading import Thread
@@ -60,6 +60,8 @@ class Client:
 		return len([k for k in keys if k in body]) > 0
 
 	def clear_cache(self, symbol: str)-> bool:
+		if self.cache is None:
+			return False
 		return self.cache.clear_cache(symbol)
 
 	def get_symbol(self, symbol: str)-> dict | None:
@@ -68,7 +70,7 @@ class Client:
 
 		symbol = symbol.upper()
 
-		if self.cache.is_cached(symbol):
+		if self.cache is not None and self.cache.is_cached(symbol):
 			return self.cache.from_cache(symbol)
 
 		url = "https://query2.finance.yahoo.com/v10/finance/quoteSummary/{symbol}?modules={modules}"
@@ -100,7 +102,7 @@ class Client:
 			return []
 
 		threads = []
-		results = {}
+		results: Dict[str, dict] = {}
 		for i, symbol in enumerate(symbols, start=1):
 			print(f"{i}/{len(symbols)} Processing {symbol}")
 

@@ -16,16 +16,17 @@ class Ticker:
 
 	title: str
 
-	financial_data: FinancialData
+	financial_data: FinancialData | None
 
-	summary_detail: SummaryDetail
+	summary_detail: SummaryDetail | None
 
-	cashflows: CashFlows
+	cashflows: CashFlows | None
 
-	balance_sheets: BalanceSheets
+	balance_sheets: BalanceSheets | None
 
-	income_statements: IncomeStatements
+	income_statements: IncomeStatements | None
 
+	@staticmethod
 	def from_dict(data: dict)-> Ticker | None:
 		symbol = U.extract_key(data, "quoteType", "symbol")
 		title = U.extract_key(data, "quoteType", "longName")

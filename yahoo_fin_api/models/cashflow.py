@@ -79,7 +79,7 @@ class CashFlow(Model):
 
 	issuance_of_stock: int
 
-	def free_cash_flow(self, formatted: bool = False)-> int:
+	def free_cash_flow(self, formatted: bool = False)-> int | str:
 		"""
 		One of the most important numbers you can calculate from the cash flow statement is free cash flow (FCF). 
 		
@@ -99,11 +99,13 @@ class CashFlows:
 
 	cashflows: List[CashFlow]
 
+	@staticmethod
 	def from_input_file(path: str)-> CashFlows | None:
 		with open(path, "r") as file:
 			data = json.loads(file.read())
 			return CashFlows.from_dict(data)
 
+	@staticmethod
 	def from_dict(data: dict)-> CashFlows | None:
 		symbol = U.extract_key(data, "quoteType", "symbol")
 		title = U.extract_key(data, "quoteType", "longName")

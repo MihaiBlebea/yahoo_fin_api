@@ -28,3 +28,6 @@ publish:
 
 remove-old-builds:
 	rm -rf ./.eggs ./build ./dist ./yahoo_fin_api.egg-info
+
+check-typing:
+	./env/bin/mypy yahoo_fin_api

@@ -192,11 +192,13 @@ class FinancialData(Model):
 	The margin must be high enough when compared with similar businesses to attract investors.
 	"""
 
+	@staticmethod
 	def from_input_file(path: str)-> FinancialData | None:
 		with open(path, "r") as file:
 			data = json.loads(file.read())
 			return FinancialData.from_dict(data)
 
+	@staticmethod
 	def from_dict(data: dict)-> FinancialData | None:
 		symbol = U.extract_key(data, "quoteType", "symbol")
 		title = U.extract_key(data, "quoteType", "longName")

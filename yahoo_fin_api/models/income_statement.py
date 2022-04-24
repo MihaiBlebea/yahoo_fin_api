@@ -144,11 +144,13 @@ class IncomeStatements:
 
 	income_statements: List[IncomeStatement]
 
+	@staticmethod
 	def from_input_file(path: str)-> IncomeStatements | None:
 		with open(path, "r") as file:
 			data = json.loads(file.read())
 			return IncomeStatements.from_dict(data)
 
+	@staticmethod
 	def from_dict(data: dict)-> IncomeStatements | None:
 		symbol = U.extract_key(data, "quoteType", "symbol")
 		title = U.extract_key(data, "quoteType", "longName")

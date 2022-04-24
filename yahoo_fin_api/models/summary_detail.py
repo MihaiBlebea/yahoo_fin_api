@@ -102,11 +102,13 @@ class SummaryDetail(Model):
 
 	fifty_two_week_high: float
 
+	@staticmethod
 	def from_input_file(path: str)-> SummaryDetail | None:
 		with open(path, "r") as file:
 			data = json.loads(file.read())
 			return SummaryDetail.from_dict(data)
 
+	@staticmethod
 	def from_dict(data: dict)-> SummaryDetail | None:
 		symbol = U.extract_key(data, "quoteType", "symbol")
 		title = U.extract_key(data, "quoteType", "longName")

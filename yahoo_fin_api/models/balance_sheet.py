@@ -187,12 +187,14 @@ class BalanceSheets:
 
 	balance_sheets: List[BalanceSheet]
 
+	@staticmethod
 	def from_input_file(path: str)-> BalanceSheets | None:
 		with open(path, "r") as file:
 			data = json.loads(file.read())
 			return BalanceSheets.from_dict(data)
 
-	def from_dict(data: List[dict])-> BalanceSheets | None:
+	@staticmethod
+	def from_dict(data: dict)-> BalanceSheets | None:
 		symbol = U.extract_key(data, "quoteType", "symbol")
 		title = U.extract_key(data, "quoteType", "longName")
 		data = U.extract_key(data, "balanceSheetHistory", "balanceSheetStatements")
