@@ -222,3 +222,26 @@ def main():
 if __name__ == "__main__":
 	main()
 ```
+
+### Build your own cache system
+
+To implement your own cache system, just create a class that implements this interface and pass it to the client.
+
+You can use your custom cache as either **symbol_cache** or **quote_cache**, by passing it as param to the init method of the **Client**
+
+```python
+class BaseCache:
+	def is_cached(self, symbol: str)-> bool:
+		raise Exception("method 'is_cached' not implemented")
+
+	def from_cache(self, symbol: str)-> dict:
+		raise Exception("method 'from_cache' not implemented")
+
+	def to_cache(self, symbol: str, body: dict)-> None:
+		raise Exception("method 'to_cache' not implemented")
+
+	def clear_cache(self, symbol: str)-> bool:
+		raise Exception("method 'clear_cache' not implemented")
+```
+
+Have a look at the **FileCache** (/yahoo_fin_api/cache/file_cache.py) as an example.
