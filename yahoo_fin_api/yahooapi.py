@@ -6,6 +6,7 @@ from yahoo_fin_api.models.income_statement import IncomeStatements
 from yahoo_fin_api.models.balance_sheet import BalanceSheets
 from yahoo_fin_api.models.financial_data import FinancialData
 from yahoo_fin_api.models.summary_detail import SummaryDetail
+from yahoo_fin_api.models.quote  import Quote
 from yahoo_fin_api.models.ticker import Ticker
 
 
@@ -55,3 +56,24 @@ class YahooFinApi:
 		return [
 			Ticker.from_dict(r) for r in res
 		]
+
+	def get_quote(self, symbol: str, range: str)-> List[Quote] | List:
+		try:
+			res = self.client.get_quote(symbol, range)
+			if res is None:
+				return []
+		except Exception:
+			return []
+
+		quotes = []
+		for i, t in enumerate(res["timestamp"]):
+			quotes.append(Quote(
+				t,
+				res["indicators"]["quote"][0]["open"][i],
+				res["indicators"]["quote"][0]["close"][i],
+				res["indicators"]["quote"][0]["high"][i],
+				res["indicators"]["quote"][0]["low"][i],
+				res["indicators"]["quote"][0]["volume"][i]
+			))
+
+		return quotes

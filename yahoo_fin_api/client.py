@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import List, Dict
+from typing import List, Dict, Any, NoReturn
 import requests
 from pathlib import Path
 from threading import Thread
@@ -43,14 +43,29 @@ modules = [
 	"fundPerformanc"
 ]
 
+ranges = [
+	"1d",
+	"5d",
+	"1mo",
+	"3mo",
+	"6mo",
+	"1y",
+	"2y",
+	"5y",
+	"10y",
+	"ytd",
+	"max"
+]
+
 headers = {"User-agent": "Mozilla/5.0"}
 
 dir = Path(__file__).parent.resolve()
 
 class Client:
 
-	def __init__(self, cache: BaseCache = None)-> None:
-		self.cache = cache
+	def __init__(self, symbol_cache: BaseCache = None, quote_cache: BaseCache = None)-> None:
+		self.symbol_cache = symbol_cache
+		self.quote_cache = quote_cache
 
 	def __get_symbol_async(self, symbol: str, result: dict):
 		result[symbol] = self.get_symbol(symbol)
@@ -60,9 +75,13 @@ class Client:
 		return len([k for k in keys if k in body]) > 0
 
 	def clear_cache(self, symbol: str)-> bool:
-		if self.cache is None:
-			return False
-		return self.cache.clear_cache(symbol)
+		if self.symbol_cache is not None:
+			self.symbol_cache.clear_cache(symbol)
+		
+		if self.quote_cache is not None:
+			self.quote_cache.clear_cache(symbol)
+
+		return True
 
 	def get_symbol(self, symbol: str)-> dict | None:
 		if isinstance(symbol, str) is False:
@@ -70,8 +89,8 @@ class Client:
 
 		symbol = symbol.upper()
 
-		if self.cache is not None and self.cache.is_cached(symbol):
-			return self.cache.from_cache(symbol)
+		if self.symbol_cache is not None and self.symbol_cache.is_cached(symbol):
+			return self.symbol_cache.from_cache(symbol)
 
 		url = "https://query2.finance.yahoo.com/v10/finance/quoteSummary/{symbol}?modules={modules}"
 		res = requests.get(
@@ -92,8 +111,8 @@ class Client:
 		if self.__is_valid_response(body) == False:
 			return None
 
-		if self.cache is not None:
-			self.cache.to_cache(symbol, body)
+		if self.symbol_cache is not None:
+			self.symbol_cache.to_cache(symbol, body)
 
 		return body
 
@@ -116,3 +135,36 @@ class Client:
 
 		print(f"Completed {len(results)}/{len(symbols)}")
 		return [ ticker for ticker in list(results.values()) if ticker is not None ]
+
+	def get_quote(self, symbol: str, range: str)-> Dict[Any, Any] | None:
+		if range not in ranges:
+			return None
+
+		if isinstance(symbol, str) is False:
+			raise Exception("symbol is not string")
+
+		symbol = symbol.upper()
+
+		if self.quote_cache is not None and self.quote_cache.is_cached(symbol):
+			return self.quote_cache.from_cache(symbol)
+
+		url = "https://query2.finance.yahoo.com/v8/finance/chart/{symbol}?range={range}"
+		res = requests.get(
+			url.format(symbol=symbol, range=range), 
+			headers=headers,
+		)
+
+		if res.status_code != 200:
+			return None
+
+		body = res.json()
+
+		if body["chart"]["error"] is not None:
+			return None
+
+		body = body["chart"]["result"][0]
+
+		if self.quote_cache is not None:
+			self.quote_cache.to_cache(symbol, body)
+
+		return body

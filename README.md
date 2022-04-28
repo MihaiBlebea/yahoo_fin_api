@@ -145,6 +145,24 @@ if __name__ == "__main__":
 	main()
 ```
 
+### 7. Get historic quotes
+
+```python
+from yahoo_fin_api import YahooFinApi, Client, FileCache
+
+from pprint import pprint
+
+def main():
+	yf = YahooFinApi(Client(quote_cache=FileCache("./data/quotes", "quote")))
+
+	quotes = yf.get_quote("AAPL", "max")
+
+	pprint(quotes)
+
+if __name__ == "__main__":
+	main()
+```
+
 ### Example of stock valuation based on 10 cap
 
 ```python
