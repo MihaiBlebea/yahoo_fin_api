@@ -5,6 +5,7 @@ from yahoo_fin_api.models.cashflow import CashFlows
 from yahoo_fin_api.models.income_statement import IncomeStatements
 from yahoo_fin_api.models.balance_sheet import BalanceSheets
 from yahoo_fin_api.models.financial_data import FinancialData
+from yahoo_fin_api.models.key_statistics import KeyStatistics
 from yahoo_fin_api.models.summary_detail import SummaryDetail
 from yahoo_fin_api.models.quote  import Quote
 from yahoo_fin_api.models.ticker import Ticker
@@ -48,6 +49,13 @@ class YahooFinApi:
 
 		return [
 			SummaryDetail.from_dict(r) for r in res
+		]
+
+	def get_key_statistics(self, symbols: List[str])-> List[KeyStatistics] | List:
+		res = self.client.get_symbols(symbols)
+
+		return [
+			KeyStatistics.from_dict(r) for r in res
 		]
 
 	def get_all(self, symbols: List[str])-> List[Ticker] | List:
