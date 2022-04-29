@@ -33,13 +33,19 @@ class Ticker:
 
 	key_statistics: KeyStatistics | None
 
-	def get_cashflows(self)-> List[CashFlow]:
+	def get_cashflows(self)-> List[CashFlow] | None:
+		if self.cashflows is None:
+			return None
 		return self.cashflows.cashflows
 
-	def get_income_statements(self)-> List[IncomeStatement]:
+	def get_income_statements(self)-> List[IncomeStatement] | None:
+		if self.income_statements is None:
+			return None
 		return self.income_statements.income_statements
 
-	def get_balance_sheets(self)-> List[BalanceSheet]:
+	def get_balance_sheets(self)-> List[BalanceSheet] | None:
+		if self.balance_sheets is None:
+			return None
 		return self.balance_sheets.balance_sheets
 
 	@staticmethod
