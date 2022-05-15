@@ -65,9 +65,9 @@ class YahooFinApi:
 			Ticker.from_dict(r) for r in res
 		]
 
-	def get_quote(self, symbol: str, range: str)-> List[Quote] | List:
+	def get_quote(self, symbol: str, range: str, interval: str)-> List[Quote] | List:
 		try:
-			res = self.client.get_quote(symbol, range)
+			res = self.client.get_quote(symbol, range, interval)
 			if res is None:
 				return []
 		except Exception:

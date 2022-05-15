@@ -136,8 +136,11 @@ class Client:
 		print(f"Completed {len(results)}/{len(symbols)}")
 		return [ ticker for ticker in list(results.values()) if ticker is not None ]
 
-	def get_quote(self, symbol: str, range: str)-> Dict[Any, Any] | None:
+	def get_quote(self, symbol: str, range: str, interval: str)-> Dict[Any, Any] | None:
 		if range not in ranges:
+			return None
+
+		if interval not in ranges:
 			return None
 
 		if isinstance(symbol, str) is False:
@@ -148,7 +151,7 @@ class Client:
 		if self.quote_cache is not None and self.quote_cache.is_cached(symbol):
 			return self.quote_cache.from_cache(symbol)
 
-		url = "https://query2.finance.yahoo.com/v8/finance/chart/{symbol}?range={range}"
+		url = "https://query2.finance.yahoo.com/v8/finance/chart/{symbol}?range={range}&interval={interval}"
 		res = requests.get(
 			url.format(symbol=symbol, range=range), 
 			headers=headers,
