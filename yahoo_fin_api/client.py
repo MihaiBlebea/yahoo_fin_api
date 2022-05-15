@@ -57,6 +57,22 @@ ranges = [
 	"max"
 ]
 
+intervals = [
+	"1m", 
+	"2m", 
+	"5m", 
+	"15m", 
+	"30m", 
+	"60m", 
+	"90m", 
+	"1h", 
+	"1d", 
+	"5d", 
+	"1wk", 
+	"1mo", 
+	"3mo"
+]
+
 headers = {"User-agent": "Mozilla/5.0"}
 
 dir = Path(__file__).parent.resolve()
@@ -140,7 +156,7 @@ class Client:
 		if range not in ranges:
 			return None
 
-		if interval not in ranges:
+		if interval not in intervals:
 			return None
 
 		if isinstance(symbol, str) is False:
