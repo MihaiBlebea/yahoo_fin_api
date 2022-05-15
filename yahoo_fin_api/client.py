@@ -152,16 +152,17 @@ class Client:
 		print(f"Completed {len(results)}/{len(symbols)}")
 		return [ ticker for ticker in list(results.values()) if ticker is not None ]
 
-	def get_quote(self, symbol: str, range: str, interval: str)-> Dict[Any, Any] | None:
+	def get_quote(self, symbol: str, range: str, interval: str)-> Dict[Any, Any]:
+		"""Get the historical quotes"""
 		if range not in ranges:
-			return None
+			raise Exception(f"could not find range {range} in valid ranges")
 
 		if interval not in intervals:
-			return None
+			raise Exception(f"could not find interval {interval} in valid intervals")
 
 		if isinstance(symbol, str) is False:
 			raise Exception("symbol is not string")
-
+		
 		symbol = symbol.upper()
 
 		if self.quote_cache is not None and self.quote_cache.is_cached(symbol):
@@ -169,17 +170,18 @@ class Client:
 
 		url = "https://query2.finance.yahoo.com/v8/finance/chart/{symbol}?range={range}&interval={interval}"
 		res = requests.get(
-			url.format(symbol=symbol, range=range), 
+			url.format(symbol=symbol, range=range, interval=interval), 
 			headers=headers,
 		)
 
 		if res.status_code != 200:
-			return None
+			raise Exception(f"invalid http status code {res.status_code}")
 
 		body = res.json()
-
-		if body["chart"]["error"] is not None:
-			return None
+		print(body)
+		err = body["chart"]["error"]
+		if err is not None:
+			raise Exception(err)
 
 		body = body["chart"]["result"][0]
 

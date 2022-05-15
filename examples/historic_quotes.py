@@ -3,9 +3,9 @@ from yahoo_fin_api import YahooFinApi, Client, FileCache
 from pprint import pprint
 
 def main():
-	yf = YahooFinApi(Client(quote_cache=FileCache("./data/quotes", "quote")))
+	yf = YahooFinApi(Client())
 
-	quotes = yf.get_quote("AAPL", "1y")
+	quotes = yf.get_quote("AAPL", "1y", "3mo")
 
 	pprint(quotes)
 
